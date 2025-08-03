@@ -1,5 +1,7 @@
 package com.mateus.encurta_link.usuario;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,19 +10,27 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.mateus.encurta_link.exceptions.UserNotFoundException;
+import com.mateus.encurta_link.shortLink.ShortLink;
 
 @Service
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
 
     @Autowired
-    private UserRepository repository;
-    
+    private UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> user = repository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("Usuário não existe");
         }
         return user.get();
+    }
+
+    public List<ShortLink> getUserLinks(String email) throws UserNotFoundException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
+        List<ShortLink> links = user.getUserLinks().stream().toList();
+        return links;
     }
 }

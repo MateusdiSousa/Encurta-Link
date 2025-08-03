@@ -54,8 +54,8 @@ public class ShortLink {
         this.shortLink = shortLink;
     }
 
-    public User getUser() {
-        return user;
+    public String getUser() {
+        return user.getEmail();
     }
 
     public void setUser(User user) {

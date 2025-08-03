@@ -1,56 +1,65 @@
 package com.mateus.encurta_link.shortLink;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 
 import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
 import com.mateus.encurta_link.exceptions.ShortLinkNotFoundException;
+import com.mateus.encurta_link.exceptions.UserNotFoundException;
+import com.mateus.encurta_link.usuario.User;
+import com.mateus.encurta_link.usuario.UserRepository;
+import com.mateus.encurta_link.utils.RandomAlphanumeric;
 
 @Service
 public class ShortLinkService {
-    private Map<String, String> links;
 
-    public ShortLinkService() {
-        this.links = new HashMap<String, String>();
+    private final ShortLinkRepository shortLinkRepository;
+    private final UserRepository userRepository;
+
+    public ShortLinkService(ShortLinkRepository shortLinkRepository, UserRepository userRepository) {
+        this.shortLinkRepository = shortLinkRepository;
+        this.userRepository = userRepository;
     }
 
     public String GetLink(String code) throws ShortLinkNotFoundException {
-        String link = this.links.get(code);
+        ShortLink link = this.shortLinkRepository.findByShortLink(code)
+                .orElseThrow(() -> new ShortLinkConflictException());
         if (link == null) {
             throw new ShortLinkNotFoundException("Link não encontrado ou não existe");
         }
 
-        return link;
+        return link.getOriginalLink();
     }
 
-    public String AddLink(String link, String codigo) throws ShortLinkConflictException {
-        // Verify if the already exist a link with this shortcode
-        if (codigo == null || codigo.isBlank()) {
-            codigo = addLinkWithOutCode(link);
-            return codigo;
+    public ShortLink AddLink(ShortLinkDto dto, String email) throws ShortLinkConflictException, UserNotFoundException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
+
+        if (dto.shortLink() == null) {
+            String code = RandomShortLink();
+            return saveLink(dto.link(), code, user);
         }
 
-        if (links.get(codigo) == null) {
-            links.put(codigo, link);
-            return codigo;
-        } else {
+        boolean linkExist = shortLinkRepository.findByShortLink(dto.shortLink()).isPresent();
+        if (linkExist) {
             throw new ShortLinkConflictException();
         }
+
+        return saveLink(dto.link(), dto.shortLink(), user);
     }
 
-    private String addLinkWithOutCode(String link) {
+    private ShortLink saveLink(String link, String shortLink, User user) {
+        ShortLink newShortLink = new ShortLink();
+        newShortLink.setUser(user);
+        newShortLink.setOriginalLink(link);
+        newShortLink.setShortLink(shortLink);
+        return shortLinkRepository.save(newShortLink);
+    }
+
+    private String RandomShortLink() {
         while (true) {
-            String code = String.valueOf(Timestamp.valueOf(LocalDateTime.now()).getTime() / 1000);
-            // Verify if the already exist a link with this shortcode;
-            if (links.get(code) == null) {
-                links.put(code, link);
+            String code = RandomAlphanumeric.GenerateString();
+            if (shortLinkRepository.findByShortLink(code).isEmpty()) {
                 return code;
             }
         }
     }
-
 }
