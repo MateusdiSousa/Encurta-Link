@@ -2,11 +2,13 @@ package com.mateus.encurta_link.usuario;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.mateus.encurta_link.shortLink.ShortLink;
 import com.mateus.encurta_link.usuario.types.UserRole;
 
 import jakarta.persistence.Column;
@@ -16,12 +18,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "Usuario")
+@Entity(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -42,6 +46,10 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role", length = 5)
     private UserRole role;
+
+    @OneToMany(mappedBy = "user")
+    private Set<ShortLink> userLinks;
+
 
     @Override
     public String getUsername() {
