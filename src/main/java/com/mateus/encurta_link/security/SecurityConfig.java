@@ -32,7 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((req) -> {
-                    req.requestMatchers("/auth/login", "/auth/sign", "link/*")
+                    req.requestMatchers("/auth/login", "/auth/sign", "link/*", "/link/site/*")
                             .permitAll()
                             .anyRequest()
                             .authenticated();

@@ -8,8 +8,7 @@ import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
 import com.mateus.encurta_link.exceptions.ShortLinkNotFoundException;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
 import com.mateus.encurta_link.security.JwtService;
-
-import java.util.List;
+import com.mateus.encurta_link.shortLink.type.ShortLinkDtoRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +34,15 @@ public class ShortLinkController {
         return new RedirectView(link);
     }
 
+    @GetMapping("site/{codigo}")
+    public String GetLinkSite(@PathVariable(name = "codigo") String codigo)
+            throws ShortLinkNotFoundException {
+        String link = this.encurtadorService.GetLink(codigo);
+        return link;
+    }
+
     @PostMapping("create")
-    public ResponseEntity<String> CriarShortLink(@RequestBody ShortLinkDto dto,
+    public ResponseEntity<String> CriarShortLink(@RequestBody ShortLinkDtoRequest dto,
             @RequestHeader(name = "Authorization") String bearerToken)
             throws ShortLinkConflictException, UserNotFoundException {
         String token = bearerToken.substring("bearer ".length());
