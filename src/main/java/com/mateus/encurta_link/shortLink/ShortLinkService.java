@@ -1,5 +1,7 @@
 package com.mateus.encurta_link.shortLink;
 
+import java.time.LocalDateTime;
+
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -43,13 +45,14 @@ public class ShortLinkService {
         }
 
         return saveLink(dto.link(), dto.shortLink(), user);
-    }
+    } 
 
     private ShortLink saveLink(String link, String shortLink, User user) {
         ShortLink newShortLink = new ShortLink();
         newShortLink.setUser(user);
         newShortLink.setOriginalLink(link);
         newShortLink.setShortLink(shortLink);
+        newShortLink.setExpireAt(LocalDateTime.now().plusMinutes(5));
         return shortLinkRepository.save(newShortLink);
     }
 
