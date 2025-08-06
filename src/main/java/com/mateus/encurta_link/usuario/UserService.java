@@ -1,17 +1,17 @@
 package com.mateus.encurta_link.usuario;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
-import com.mateus.encurta_link.shortLink.ShortLink;
+import com.mateus.encurta_link.shortLink.type.ShortLinkDtoResponse;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -28,9 +28,10 @@ public class UserService implements UserDetailsService {
         return user.get();
     }
 
-    public List<ShortLink> getUserLinks(String email) throws UserNotFoundException {
+    @Cacheable(value = "userLinks", key = "#email")
+    public List<ShortLinkDtoResponse> getUserLinks(String email) throws UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
-        List<ShortLink> links = user.getUserLinks().stream().toList();
-        return links;
+
+        return user.getUserLinks().stream().map((link) -> ShortLinkDtoResponse.fromEntity(link)).toList();
     }
 }

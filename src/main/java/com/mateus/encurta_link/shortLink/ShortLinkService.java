@@ -1,10 +1,12 @@
 package com.mateus.encurta_link.shortLink;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
 import com.mateus.encurta_link.exceptions.ShortLinkNotFoundException;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
+import com.mateus.encurta_link.shortLink.type.ShortLinkDtoRequest;
 import com.mateus.encurta_link.usuario.User;
 import com.mateus.encurta_link.usuario.UserRepository;
 import com.mateus.encurta_link.utils.RandomAlphanumeric;
@@ -20,17 +22,14 @@ public class ShortLinkService {
         this.userRepository = userRepository;
     }
 
+    @Cacheable(value = "shorLink", key = "#code")
     public String GetLink(String code) throws ShortLinkNotFoundException {
         ShortLink link = this.shortLinkRepository.findByShortLink(code)
-                .orElseThrow(() -> new ShortLinkConflictException());
-        if (link == null) {
-            throw new ShortLinkNotFoundException("Link não encontrado ou não existe");
-        }
-
+                .orElseThrow(() -> new ShortLinkNotFoundException());
         return link.getOriginalLink();
     }
 
-    public ShortLink AddLink(ShortLinkDto dto, String email) throws ShortLinkConflictException, UserNotFoundException {
+    public ShortLink AddLink(ShortLinkDtoRequest dto, String email) throws ShortLinkConflictException, UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
         if (dto.shortLink() == null) {
