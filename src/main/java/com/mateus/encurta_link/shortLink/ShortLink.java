@@ -33,7 +33,7 @@ public class ShortLink {
     private User user;
 
     @Column(nullable = false)
-    private LocalDateTime expireAt;
+    private LocalDateTime expirationTime;
 
     public String getId() {
         return id;
@@ -67,12 +67,12 @@ public class ShortLink {
         this.user = user;
     }
 
-    public void setExpireAt(LocalDateTime date) {
-        this.expireAt = date;
+    public void setExpirationTime(LocalDateTime date) {
+        this.expirationTime = date;
     }
 
-    public LocalDateTime getExpireAt() {
-        return this.expireAt;
+    public LocalDateTime getExpirationTime() {
+        return this.expirationTime;
     }
 
 }

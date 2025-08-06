@@ -1,8 +1,11 @@
 package com.mateus.encurta_link.shortLink;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
@@ -12,6 +15,8 @@ import com.mateus.encurta_link.shortLink.type.ShortLinkDtoRequest;
 import com.mateus.encurta_link.usuario.User;
 import com.mateus.encurta_link.usuario.UserRepository;
 import com.mateus.encurta_link.utils.RandomAlphanumeric;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ShortLinkService {
@@ -31,7 +36,8 @@ public class ShortLinkService {
         return link.getOriginalLink();
     }
 
-    public ShortLink AddLink(ShortLinkDtoRequest dto, String email) throws ShortLinkConflictException, UserNotFoundException {
+    public ShortLink AddLink(ShortLinkDtoRequest dto, String email)
+            throws ShortLinkConflictException, UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
         if (dto.shortLink() == null) {
@@ -45,14 +51,14 @@ public class ShortLinkService {
         }
 
         return saveLink(dto.link(), dto.shortLink(), user);
-    } 
+    }
 
     private ShortLink saveLink(String link, String shortLink, User user) {
         ShortLink newShortLink = new ShortLink();
         newShortLink.setUser(user);
         newShortLink.setOriginalLink(link);
         newShortLink.setShortLink(shortLink);
-        newShortLink.setExpireAt(LocalDateTime.now().plusMinutes(5));
+        newShortLink.setExpirationTime(LocalDateTime.now().plusDays(30));
         return shortLinkRepository.save(newShortLink);
     }
 
@@ -63,5 +69,12 @@ public class ShortLinkService {
                 return code;
             }
         }
+    }
+
+    @Transactional
+    public void removeExpiredLinks() {
+        shortLinkRepository.deleteByExpirationTimeBefore(LocalDateTime.now());
+
+        System.out.println("\n\n\n\nShort Links removed\n\n\n\n\n");
     }
 }
