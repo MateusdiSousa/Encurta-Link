@@ -1,11 +1,8 @@
 package com.mateus.encurta_link.shortLink;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
