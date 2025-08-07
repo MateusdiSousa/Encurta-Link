@@ -27,19 +27,33 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
 
+    private static final String[] WHITE_LIST = {
+            "/auth/login",
+            "/auth/sign",
+            "/v3/api-docs",
+            "/v3/api-docs/**", // Adicione esta linha
+            "/v3/api-docs.yaml", // Para suporte a YAML
+            "/swagger-ui/**", // Interface do Swagger
+            "/swagger-ui.html", // HTML principal
+            "/swagger-resources/**", // Recursos do Swagger
+            "/webjars/**", // Bibliotecas JavaScript
+            "/configuration/**", // Configurações adicionais
+            "/favicon.ico" // Ícone do Swagger
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((req) -> {
-                    req.requestMatchers("/auth/login", "/auth/sign", "link/*", "/link/site/*")
-                            .permitAll()
-                            .anyRequest()
-                            .authenticated();
-                })
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(WHITE_LIST).permitAll()
+                        .anyRequest().authenticated())
                 .cors(CorsConfigurer::disable)
                 .userDetailsService(userService)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
@@ -48,7 +62,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 }
