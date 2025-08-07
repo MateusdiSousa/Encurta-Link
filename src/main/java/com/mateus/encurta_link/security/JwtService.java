@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private final String SECRET_KEY = "9fafdae7920449ee4407fe456d101ba753a9e1c0a9851858a5ecfdfec1d0b4f5";
-
+    @Value("${token.secret.key}")
+    private String SECRET_KEY;
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigninKey())
