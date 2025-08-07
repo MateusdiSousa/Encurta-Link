@@ -1,4 +1,4 @@
-package com.mateus.encurta_link.usuario;
+package com.mateus.encurta_link.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

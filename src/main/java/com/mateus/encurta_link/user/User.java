@@ -1,4 +1,4 @@
-package com.mateus.encurta_link.usuario;
+package com.mateus.encurta_link.user;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.mateus.encurta_link.shortLink.ShortLink;
-import com.mateus.encurta_link.usuario.types.UserRole;
+import com.mateus.encurta_link.user.types.UserRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

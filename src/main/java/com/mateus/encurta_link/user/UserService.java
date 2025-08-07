@@ -1,4 +1,4 @@
-package com.mateus.encurta_link.usuario;
+package com.mateus.encurta_link.user;
 
 import java.util.List;
 import java.util.Optional;

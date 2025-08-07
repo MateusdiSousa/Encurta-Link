@@ -1,8 +1,9 @@
-package com.mateus.encurta_link.usuario;
+package com.mateus.encurta_link.user;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mateus.encurta_link.documentation.IUserController;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
 import com.mateus.encurta_link.security.JwtService;
 import com.mateus.encurta_link.shortLink.type.ShortLinkDtoResponse;
@@ -16,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 @RequestMapping("user")
 @RestController
-public class UserController {
+public class UserController implements IUserController {
     @Autowired
     private UserService userService;
     @Autowired
     private JwtService jwtService;
 
     @GetMapping("/links")
-    public ResponseEntity<List<ShortLinkDtoResponse>> GetUserLinks(@RequestHeader(name = "Authorization") String bearerToken)
+    public ResponseEntity<List<ShortLinkDtoResponse>> getUserLinks(@RequestHeader(name = "Authorization") String bearerToken)
             throws UserNotFoundException {
         String token = bearerToken.substring("bearer ".length());
         String email = jwtService.extractEmail(token);
