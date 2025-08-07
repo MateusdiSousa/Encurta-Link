@@ -28,7 +28,6 @@ public class UserService implements UserDetailsService {
         return user.get();
     }
 
-    @Cacheable(value = "userLinks", key = "#email")
     public List<ShortLinkDtoResponse> getUserLinks(String email) throws UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 

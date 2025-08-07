@@ -1,5 +1,7 @@
 package com.mateus.encurta_link.shortLink;
 
+import java.time.LocalDateTime;
+
 import com.mateus.encurta_link.usuario.User;
 
 import jakarta.persistence.Column;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class ShortLink {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
-    private String id; 
+    private String id;
 
     @Column
     private String originalLink;
@@ -29,6 +31,9 @@ public class ShortLink {
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "usuario_id", nullable = false)
     private User user;
+
+    @Column(nullable = false)
+    private LocalDateTime expirationTime;
 
     public String getId() {
         return id;
@@ -60,6 +65,14 @@ public class ShortLink {
 
     public void setUser(User user) {
         this.user = user;
-    }    
+    }
+
+    public void setExpirationTime(LocalDateTime date) {
+        this.expirationTime = date;
+    }
+
+    public LocalDateTime getExpirationTime() {
+        return this.expirationTime;
+    }
 
 }
