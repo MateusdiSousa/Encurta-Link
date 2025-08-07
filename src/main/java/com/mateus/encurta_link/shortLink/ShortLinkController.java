@@ -35,13 +35,6 @@ public class ShortLinkController implements IShortLinkController{
         return new RedirectView(link);
     }
 
-    @GetMapping("site/{codigo}")
-    public String getLinkSite(@PathVariable(name = "codigo") String codigo)
-            throws ShortLinkNotFoundException {
-        String link = this.encurtadorService.GetLink(codigo);
-        return link;
-    }
-
     @PostMapping("create")
     public ResponseEntity<String> criarShortLink(@RequestBody ShortLinkDtoRequest dto,
             @RequestHeader(name = "Authorization") String bearerToken)

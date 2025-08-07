@@ -49,31 +49,6 @@ public interface IShortLinkController {
         @PathVariable(name = "codigo") String codigo
     ) throws ShortLinkNotFoundException;
 
-    @Operation(
-        summary = "Obter URL original",
-        description = "Retorna a URL original como string sem redirecionar",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "URL original encontrada",
-                content = @Content(mediaType = "text/plain")
-            ),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Código não encontrado",
-                content = @Content
-            )
-        }
-    )
-    @GetMapping("site/{codigo}")
-    String getLinkSite(
-        @Parameter(
-            description = "Código do link encurtado",
-            example = "abc123",
-            required = true
-        )
-        @PathVariable(name = "codigo") String codigo
-    ) throws ShortLinkNotFoundException;
 
     @Operation(
         summary = "Criar novo link encurtado",
