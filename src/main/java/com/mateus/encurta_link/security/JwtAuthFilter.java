@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.mateus.encurta_link.usuario.UserService;
+import com.mateus.encurta_link.user.UserService;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
