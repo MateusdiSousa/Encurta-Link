@@ -1,4 +1,20 @@
 services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"  # Mapeia a porta do server.port
+    environment:
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_USER=example
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=example
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - TOKEN_SECRET_KEY=504bfb885f330ecf2d135888424fd06e0e2c046135fd435afd59358ac3768c94  # Altere para uma chave segura!
+    depends_on:
+      - db
+      - redis
   db:
     image: postgres
     restart: always

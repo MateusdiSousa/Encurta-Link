@@ -10,9 +10,9 @@ import com.mateus.encurta_link.authentication.types.UserRegisterRequest;
 import com.mateus.encurta_link.exceptions.InvalidCredentialsException;
 import com.mateus.encurta_link.exceptions.UserAlreadyExistException;
 import com.mateus.encurta_link.security.JwtService;
-import com.mateus.encurta_link.usuario.User;
-import com.mateus.encurta_link.usuario.UserRepository;
-import com.mateus.encurta_link.usuario.types.UserRole;
+import com.mateus.encurta_link.user.User;
+import com.mateus.encurta_link.user.UserRepository;
+import com.mateus.encurta_link.user.types.UserRole;
 
 @Service
 public class AuthenticationService {

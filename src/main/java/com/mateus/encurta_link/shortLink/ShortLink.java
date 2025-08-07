@@ -2,7 +2,7 @@ package com.mateus.encurta_link.shortLink;
 
 import java.time.LocalDateTime;
 
-import com.mateus.encurta_link.usuario.User;
+import com.mateus.encurta_link.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
