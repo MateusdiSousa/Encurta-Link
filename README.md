@@ -26,8 +26,8 @@ A high-performance Spring Boot URL shortener with JWT authentication, Redis cach
 
 ### 1. Clone the Repository  
 ```bash
-git clone https://github.com/MateusdiSousa/Encurta-Link.git
-cd Encurta-Link
+git clone https://github.com/MateusdiSousa/ShortLink.git
+cd ShortLink
 ```
 
 ### 2 Build the Project
