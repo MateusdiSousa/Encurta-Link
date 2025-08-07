@@ -9,8 +9,8 @@ import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
 import com.mateus.encurta_link.exceptions.ShortLinkNotFoundException;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
 import com.mateus.encurta_link.shortLink.type.ShortLinkDtoRequest;
-import com.mateus.encurta_link.usuario.User;
-import com.mateus.encurta_link.usuario.UserRepository;
+import com.mateus.encurta_link.user.User;
+import com.mateus.encurta_link.user.UserRepository;
 import com.mateus.encurta_link.utils.RandomAlphanumeric;
 
 import jakarta.transaction.Transactional;

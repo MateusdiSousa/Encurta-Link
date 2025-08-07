@@ -1,6 +1,20 @@
 package com.mateus.encurta_link.shortLink.type;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "DTO de requisição para criação de um novo link encurtado")
 public record ShortLinkDtoRequest(
+    @Schema(
+        description = "URL original a ser encurtada",
+        example = "https://exemplo.com/url-muito-longa",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
     String link,
+    
+    @Schema(
+        description = "Código customizado para o link encurtado (opcional)",
+        example = "meulink",
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
     String shortLink
 ) {}

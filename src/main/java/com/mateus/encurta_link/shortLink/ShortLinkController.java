@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.mateus.encurta_link.documentation.IShortLinkController;
 import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
 import com.mateus.encurta_link.exceptions.ShortLinkNotFoundException;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 @RestController
 @RequestMapping("link")
-public class ShortLinkController {
+public class ShortLinkController implements IShortLinkController{
     @Autowired
     private ShortLinkService encurtadorService;
 
@@ -28,21 +29,21 @@ public class ShortLinkController {
     private JwtService jwtService;
 
     @GetMapping("{codigo}")
-    public RedirectView RedirecionarLink(@PathVariable(name = "codigo") String codigo)
+    public RedirectView redirecionarLink(@PathVariable(name = "codigo") String codigo)
             throws ShortLinkNotFoundException {
         String link = this.encurtadorService.GetLink(codigo);
         return new RedirectView(link);
     }
 
     @GetMapping("site/{codigo}")
-    public String GetLinkSite(@PathVariable(name = "codigo") String codigo)
+    public String getLinkSite(@PathVariable(name = "codigo") String codigo)
             throws ShortLinkNotFoundException {
         String link = this.encurtadorService.GetLink(codigo);
         return link;
     }
 
     @PostMapping("create")
-    public ResponseEntity<String> CriarShortLink(@RequestBody ShortLinkDtoRequest dto,
+    public ResponseEntity<String> criarShortLink(@RequestBody ShortLinkDtoRequest dto,
             @RequestHeader(name = "Authorization") String bearerToken)
             throws ShortLinkConflictException, UserNotFoundException {
         String token = bearerToken.substring("bearer ".length());
