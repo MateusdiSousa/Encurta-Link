@@ -2,6 +2,8 @@ package com.mateus.encurta_link.model;
 
 import java.time.LocalDateTime;
 
+import com.mateus.encurta_link.dto.ShortLink.ShortLinkDtoRequest;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +18,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShortLink {
+    public ShortLink(ShortLinkDtoRequest dto) {
+        this.originalLink = dto.link();
+        this.shortLink = dto.shortLink();
+        this.expirationTime = LocalDateTime.now().plusDays(1);
+    }
+
+
+
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     private String id;

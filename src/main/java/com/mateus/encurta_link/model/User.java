@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.mateus.encurta_link.dto.Auth.UserRegisterRequest;
 import com.mateus.encurta_link.dto.User.UserRole;
 
 import jakarta.persistence.Column;
@@ -57,6 +58,11 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));
+    }
+
+    public User(UserRegisterRequest dto ) {
+        this.email = dto.email();
+        this.password = dto.password();     
     }
 }
 

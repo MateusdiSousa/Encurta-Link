@@ -13,12 +13,13 @@ import com.mateus.encurta_link.model.ShortLink;
 import com.mateus.encurta_link.model.User;
 import com.mateus.encurta_link.repository.ShortLinkRepository;
 import com.mateus.encurta_link.repository.UserRepository;
+import com.mateus.encurta_link.service.interfaces.IShortLinkService;
 import com.mateus.encurta_link.utils.RandomAlphanumeric;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class ShortLinkService {
+public class ShortLinkService implements IShortLinkService {
 
     private final ShortLinkRepository shortLinkRepository;
     private final UserRepository userRepository;
