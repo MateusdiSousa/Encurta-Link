@@ -1,6 +1,7 @@
-package com.mateus.encurta_link.shortLink.type;
+package com.mateus.encurta_link.dto.ShortLink;
 
-import com.mateus.encurta_link.shortLink.ShortLink;
+import com.mateus.encurta_link.model.ShortLink;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "DTO de resposta com informações completas sobre um link encurtado")

@@ -1,14 +1,15 @@
-package com.mateus.encurta_link.authentication;
+package com.mateus.encurta_link.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mateus.encurta_link.authentication.types.AuthenticationResponse;
-import com.mateus.encurta_link.authentication.types.UserRegisterRequest;
 import com.mateus.encurta_link.documentation.IAuthenticationController;
+import com.mateus.encurta_link.dto.Auth.AuthenticationResponse;
+import com.mateus.encurta_link.dto.Auth.UserRegisterRequest;
 import com.mateus.encurta_link.exceptions.InvalidCredentialsException;
 import com.mateus.encurta_link.exceptions.UserAlreadyExistException;
-import com.mateus.encurta_link.user.User;
+import com.mateus.encurta_link.model.User;
+import com.mateus.encurta_link.service.AuthenticationService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

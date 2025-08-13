@@ -4,7 +4,8 @@ import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.security.*;
-import com.mateus.encurta_link.shortLink.type.ShortLinkDtoResponse;
+
+import com.mateus.encurta_link.dto.ShortLink.ShortLinkDtoResponse;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

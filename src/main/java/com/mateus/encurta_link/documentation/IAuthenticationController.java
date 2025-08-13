@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
-import com.mateus.encurta_link.authentication.types.AuthenticationResponse;
-import com.mateus.encurta_link.authentication.types.UserRegisterRequest;
+
+import com.mateus.encurta_link.dto.Auth.AuthenticationResponse;
+import com.mateus.encurta_link.dto.Auth.UserRegisterRequest;
 import com.mateus.encurta_link.exceptions.InvalidCredentialsException;
 import com.mateus.encurta_link.exceptions.UserAlreadyExistException;
-import com.mateus.encurta_link.user.User;
+import com.mateus.encurta_link.model.User;
 
 public interface IAuthenticationController {
 

@@ -1,4 +1,4 @@
-package com.mateus.encurta_link.user;
+package com.mateus.encurta_link.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +9,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.mateus.encurta_link.dto.ShortLink.ShortLinkDtoResponse;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
-import com.mateus.encurta_link.shortLink.type.ShortLinkDtoResponse;
+import com.mateus.encurta_link.model.User;
+import com.mateus.encurta_link.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {

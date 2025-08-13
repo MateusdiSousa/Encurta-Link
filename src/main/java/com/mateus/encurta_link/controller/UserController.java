@@ -1,12 +1,13 @@
-package com.mateus.encurta_link.user;
+package com.mateus.encurta_link.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mateus.encurta_link.documentation.IUserController;
+import com.mateus.encurta_link.dto.ShortLink.ShortLinkDtoResponse;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
-import com.mateus.encurta_link.security.JwtService;
-import com.mateus.encurta_link.shortLink.type.ShortLinkDtoResponse;
+import com.mateus.encurta_link.service.JwtService;
+import com.mateus.encurta_link.service.UserService;
 
 import java.util.List;
 

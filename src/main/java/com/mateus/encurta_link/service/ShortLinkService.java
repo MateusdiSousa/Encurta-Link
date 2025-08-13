@@ -1,16 +1,18 @@
-package com.mateus.encurta_link.shortLink;
+package com.mateus.encurta_link.service;
 
 import java.time.LocalDateTime;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.mateus.encurta_link.dto.ShortLink.ShortLinkDtoRequest;
 import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
 import com.mateus.encurta_link.exceptions.ShortLinkNotFoundException;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
-import com.mateus.encurta_link.shortLink.type.ShortLinkDtoRequest;
-import com.mateus.encurta_link.user.User;
-import com.mateus.encurta_link.user.UserRepository;
+import com.mateus.encurta_link.model.ShortLink;
+import com.mateus.encurta_link.model.User;
+import com.mateus.encurta_link.repository.ShortLinkRepository;
+import com.mateus.encurta_link.repository.UserRepository;
 import com.mateus.encurta_link.utils.RandomAlphanumeric;
 
 import jakarta.transaction.Transactional;

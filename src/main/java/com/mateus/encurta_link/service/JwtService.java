@@ -1,4 +1,4 @@
-package com.mateus.encurta_link.security;
+package com.mateus.encurta_link.service;
 
 import java.util.Date;
 import java.util.function.Function;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.mateus.encurta_link.user.User;
+import com.mateus.encurta_link.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

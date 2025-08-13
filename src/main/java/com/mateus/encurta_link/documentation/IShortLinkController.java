@@ -13,8 +13,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.*;
+
+import com.mateus.encurta_link.dto.ShortLink.ShortLinkDtoRequest;
 import com.mateus.encurta_link.exceptions.*;
-import com.mateus.encurta_link.shortLink.type.ShortLinkDtoRequest;
 
 @SecurityScheme(
     name = "bearerAuth",
