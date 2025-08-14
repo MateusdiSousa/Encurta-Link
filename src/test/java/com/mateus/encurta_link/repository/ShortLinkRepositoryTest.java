@@ -46,6 +46,13 @@ public class ShortLinkRepositoryTest {
     }
 
     @Test
+    @DisplayName("Should return empty when shortcode doesn't exist")
+    void findShortLinkByShortCodeNotFound() {
+        Optional<ShortLink> shortLink = shortLinkRepository.findByShortLink("nonexistent");
+        Assertions.assertThat(shortLink.isPresent()).isFalse();
+    }
+
+    @Test
     @DisplayName("Should delete all ShortLink expired from database")
     void deleteShortLinkByExpirationTime() {
         ShortLinkDtoRequest dto = new ShortLinkDtoRequest("www.google.com", "google");
@@ -53,13 +60,6 @@ public class ShortLinkRepositoryTest {
         shortLinkRepository.deleteByExpirationTimeBefore(LocalDateTime.now());
         List<ShortLink> allShortLinks = shortLinkRepository.findAll();
         Assertions.assertThat(allShortLinks.size()).isEqualTo(0);
-    }
-
-    @Test
-    @DisplayName("Should return empty when shortcode doesn't exist")
-    void findShortLinkByShortCodeNotFound() {
-        Optional<ShortLink> shortLink = shortLinkRepository.findByShortLink("nonexistent");
-        Assertions.assertThat(shortLink.isPresent()).isFalse();
     }
 
     @Test
@@ -73,7 +73,6 @@ public class ShortLinkRepositoryTest {
 
         Assertions.assertThat(allShortLinks.size()).isEqualTo(1);
     }
-
 
     private ShortLink createShortLink(ShortLinkDtoRequest dto) {
         User newUser = createUser(

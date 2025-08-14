@@ -40,25 +40,21 @@ public class ShortLinkService implements IShortLinkService {
             throws ShortLinkConflictException, UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
+        ShortLink newShortLink = new ShortLink(dto);
+        newShortLink.setUser(user);
+
         if (dto.shortLink() == null) {
             String code = RandomShortLink();
-            return saveLink(dto.link(), code, user);
+            newShortLink.setShortLink(code);
+            return shortLinkRepository.save(newShortLink);
         }
 
         boolean linkExist = shortLinkRepository.findByShortLink(dto.shortLink()).isPresent();
+
         if (linkExist) {
             throw new ShortLinkConflictException();
         }
 
-        return saveLink(dto.link(), dto.shortLink(), user);
-    }
-
-    private ShortLink saveLink(String link, String shortLink, User user) {
-        ShortLink newShortLink = new ShortLink();
-        newShortLink.setUser(user);
-        newShortLink.setOriginalLink(link);
-        newShortLink.setShortLink(shortLink);
-        newShortLink.setExpirationTime(LocalDateTime.now().plusDays(30));
         return shortLinkRepository.save(newShortLink);
     }
 

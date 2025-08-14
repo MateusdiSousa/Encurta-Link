@@ -21,7 +21,7 @@ public class ShortLink {
     public ShortLink(ShortLinkDtoRequest dto) {
         this.originalLink = dto.link();
         this.shortLink = dto.shortLink();
-        this.expirationTime = LocalDateTime.now().plusDays(1);
+        this.expirationTime = LocalDateTime.now().plusDays(30);
     }
 
 
