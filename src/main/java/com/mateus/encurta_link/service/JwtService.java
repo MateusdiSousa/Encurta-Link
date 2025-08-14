@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.mateus.encurta_link.model.User;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -21,6 +22,11 @@ public class JwtService {
 
     @Value("${token.secret.key}")
     private String SECRET_KEY;
+
+    public void setSecretKey(String secret) {
+        this.SECRET_KEY = secret;
+    }
+    
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigninKey())
@@ -38,12 +44,20 @@ public class JwtService {
     }
 
     public boolean isValid(String token, UserDetails user) {
-        String email = extractEmail(token);
-        return (email.equals(user.getUsername()) && !isTokenExpired(token));
+        try {
+            String email = extractEmail(token);
+            return (email.equals(user.getUsername()) && !isTokenExpired(token));    
+        } catch (ExpiredJwtException e) {
+            return false;
+        }
     }
 
     public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {

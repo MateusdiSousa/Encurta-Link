@@ -49,7 +49,7 @@ public class ShortLinkServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // --- Testes para o GetLink
+    // --- Test: GetLink
 
     @Test
     @DisplayName("Should return original link when short link exists")
@@ -78,12 +78,11 @@ public class ShortLinkServiceTest {
         assertThrows(ShortLinkNotFoundException.class, () -> shortLinkService.GetLink(code));
     }
 
-    // --- Testes para AddLink() ---
+    // --- Test: AddLink() ---
 
     @Test
     @DisplayName("Should create a new ShortLink on database")
     void testAddLink_WhenCreateShortLink_Sucess() throws ShortLinkConflictException, UserNotFoundException {
-        // Arrange
         String email = "user@gmail.com";
         User mockUser = new User("", email, "", null, null);
         ShortLinkDtoRequest dto = new ShortLinkDtoRequest("https://original.com", "abcd");
@@ -92,10 +91,8 @@ public class ShortLinkServiceTest {
         when(shortLinkRepository.findByShortLink(dto.shortLink())).thenReturn(Optional.empty());
         when(shortLinkRepository.save(any(ShortLink.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
         ShortLink result = shortLinkService.AddLink(dto, email);
 
-        // Assert
         assertEquals(result.getShortLink(), dto.shortLink());
         assertEquals(result.getOriginalLink(), dto.link());
         assertEquals(result.getUser(), email);
@@ -104,7 +101,6 @@ public class ShortLinkServiceTest {
     @Test
     @DisplayName("Should create a new ShortLink with random code on database")
     void testAddLink_WithNullShortLink_GeneratesRandomCode() throws ShortLinkConflictException, UserNotFoundException {
-        // Arrange
         String email = "user@test.com";
         User mockUser = new User();
         ShortLinkDtoRequest dto = new ShortLinkDtoRequest("https://original.com", null);
@@ -113,10 +109,8 @@ public class ShortLinkServiceTest {
         when(shortLinkRepository.findByShortLink(anyString())).thenReturn(Optional.empty());
         when(shortLinkRepository.save(any(ShortLink.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
         ShortLink result = shortLinkService.AddLink(dto, email);
 
-        // Assert
         assertNotNull(result.getShortLink());
         assertTrue(result.getShortLink().length() > 0);
     }
@@ -124,20 +118,17 @@ public class ShortLinkServiceTest {
     @Test
     @DisplayName("Should return user not found when try to create a new ShortLink")
     void testAddLink_WhenUserNotFound_ThrowsException() {
-        // Arrange
         String email = "nonexistent@test.com";
         ShortLinkDtoRequest dto = new ShortLinkDtoRequest("https://original.com", "custom123");
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(UserNotFoundException.class, () -> shortLinkService.AddLink(dto, email));
     }
 
     @Test
     @DisplayName("Should return ShortLink already exists exception when try to create a ShortLink that already exists")
     void testAddLink_WhenShortLinkAlreadyExists_ThrowsException() {
-        // Arrange
         String email = "user@test.com";
         User mockUser = new User();
         ShortLinkDtoRequest dto = new ShortLinkDtoRequest("https://original.com", "duplicate");
@@ -145,21 +136,17 @@ public class ShortLinkServiceTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(mockUser));
         when(shortLinkRepository.findByShortLink("duplicate")).thenReturn(Optional.of(new ShortLink()));
 
-        // Act & Assert
         assertThrows(ShortLinkConflictException.class, () -> shortLinkService.AddLink(dto, email));
     }
 
-    // --- Testes para removeExpiredLinks() ---
+    // --- Test: removeExpiredLinks() ---
     @Test
     void testRemoveExpiredLinks_CallsRepositoryDeleteMethod() {
-        // Arrange
         LocalDateTime now = LocalDateTime.now();
         doNothing().when(shortLinkRepository).deleteByExpirationTimeBefore(now);
 
-        // Act
         shortLinkService.removeExpiredLinks();
 
-        // Assert
         verify(shortLinkRepository, times(1)).deleteByExpirationTimeBefore(any(LocalDateTime.class));
     }
 }
