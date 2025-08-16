@@ -1,5 +1,6 @@
 package com.mateus.encurta_link.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,10 @@ public class UserService implements UserDetailsService {
     public List<ShortLinkDtoResponse> getUserLinks(String email) throws UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
-        return user.getUserLinks().stream().map((link) -> ShortLinkDtoResponse.fromEntity(link)).toList();
+        List<ShortLinkDtoResponse> shortLinkList = user.getUserLinks()
+                .stream()
+                .map((link) -> ShortLinkDtoResponse.fromEntity(link))
+                .toList();
+        return shortLinkList;
     }
 }
