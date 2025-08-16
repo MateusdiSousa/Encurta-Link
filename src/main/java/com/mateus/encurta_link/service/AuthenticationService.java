@@ -2,6 +2,7 @@ package com.mateus.encurta_link.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,13 +58,19 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse Authenticate(User request) throws InvalidCredentialsException {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new InvalidCredentialsException());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+    
+            User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new InvalidCredentialsException());
+            
+            String token = this.jwtService.generateToken(user);
+            
+            return new AuthenticationResponse(token);
+        } catch (AuthenticationException e) {
+            throw new InvalidCredentialsException();
+        }
         
-        String token = this.jwtService.generateToken(user);
 
-        return new AuthenticationResponse(token);
     }
 }
