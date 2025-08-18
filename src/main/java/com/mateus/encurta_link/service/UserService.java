@@ -36,6 +36,7 @@ public class UserService implements UserDetailsService {
                 .stream()
                 .map((link) -> ShortLinkDtoResponse.fromEntity(link))
                 .toList();
+        shortLinkList = shortLinkList.stream().sorted((a , b) -> a.id().compareTo(b.id())).toList();
         return shortLinkList;
     }
 }
