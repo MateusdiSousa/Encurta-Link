@@ -1,4 +1,4 @@
-package com.mateus.encurta_link.security;
+package com.mateus.encurta_link.service;
 
 import java.util.Date;
 import java.util.function.Function;
@@ -9,18 +9,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.mateus.encurta_link.user.User;
+import com.mateus.encurta_link.model.User;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 @Service
 public class JwtService {
 
     @Value("${token.secret.key}")
     private String SECRET_KEY;
+
+    public void setSecretKey(String secret) {
+        this.SECRET_KEY = secret;
+    }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigninKey())
@@ -38,12 +46,24 @@ public class JwtService {
     }
 
     public boolean isValid(String token, UserDetails user) {
-        String email = extractEmail(token);
-        return (email.equals(user.getUsername()) && !isTokenExpired(token));
+        try {
+            String email = extractEmail(token);
+            return (email.equals(user.getUsername()) && !isTokenExpired(token));
+        } catch (ExpiredJwtException e) {
+            return false; // Token expirado
+        } catch (SignatureException | MalformedJwtException e) {
+            return false; // Token inválido ou adulterado
+        } catch (IllegalArgumentException e) {
+            return false; // Token nulo/vazio
+        }
     }
 
     public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {

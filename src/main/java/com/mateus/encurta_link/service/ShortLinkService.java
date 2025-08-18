@@ -1,22 +1,25 @@
-package com.mateus.encurta_link.shortLink;
+package com.mateus.encurta_link.service;
 
 import java.time.LocalDateTime;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.mateus.encurta_link.dto.ShortLink.ShortLinkDtoRequest;
 import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
 import com.mateus.encurta_link.exceptions.ShortLinkNotFoundException;
 import com.mateus.encurta_link.exceptions.UserNotFoundException;
-import com.mateus.encurta_link.shortLink.type.ShortLinkDtoRequest;
-import com.mateus.encurta_link.user.User;
-import com.mateus.encurta_link.user.UserRepository;
+import com.mateus.encurta_link.model.ShortLink;
+import com.mateus.encurta_link.model.User;
+import com.mateus.encurta_link.repository.ShortLinkRepository;
+import com.mateus.encurta_link.repository.UserRepository;
+import com.mateus.encurta_link.service.interfaces.IShortLinkService;
 import com.mateus.encurta_link.utils.RandomAlphanumeric;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class ShortLinkService {
+public class ShortLinkService implements IShortLinkService {
 
     private final ShortLinkRepository shortLinkRepository;
     private final UserRepository userRepository;
@@ -37,25 +40,21 @@ public class ShortLinkService {
             throws ShortLinkConflictException, UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
+        ShortLink newShortLink = new ShortLink(dto);
+        newShortLink.setUser(user);
+
         if (dto.shortLink() == null) {
             String code = RandomShortLink();
-            return saveLink(dto.link(), code, user);
+            newShortLink.setShortLink(code);
+            return shortLinkRepository.save(newShortLink);
         }
 
         boolean linkExist = shortLinkRepository.findByShortLink(dto.shortLink()).isPresent();
+
         if (linkExist) {
             throw new ShortLinkConflictException();
         }
 
-        return saveLink(dto.link(), dto.shortLink(), user);
-    }
-
-    private ShortLink saveLink(String link, String shortLink, User user) {
-        ShortLink newShortLink = new ShortLink();
-        newShortLink.setUser(user);
-        newShortLink.setOriginalLink(link);
-        newShortLink.setShortLink(shortLink);
-        newShortLink.setExpirationTime(LocalDateTime.now().plusDays(30));
         return shortLinkRepository.save(newShortLink);
     }
 

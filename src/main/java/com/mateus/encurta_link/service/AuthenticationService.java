@@ -1,18 +1,18 @@
-package com.mateus.encurta_link.authentication;
+package com.mateus.encurta_link.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.mateus.encurta_link.authentication.types.AuthenticationResponse;
-import com.mateus.encurta_link.authentication.types.UserRegisterRequest;
+import com.mateus.encurta_link.dto.Auth.AuthenticationResponse;
+import com.mateus.encurta_link.dto.Auth.UserRegisterRequest;
+import com.mateus.encurta_link.dto.User.UserRole;
 import com.mateus.encurta_link.exceptions.InvalidCredentialsException;
 import com.mateus.encurta_link.exceptions.UserAlreadyExistException;
-import com.mateus.encurta_link.security.JwtService;
-import com.mateus.encurta_link.user.User;
-import com.mateus.encurta_link.user.UserRepository;
-import com.mateus.encurta_link.user.types.UserRole;
+import com.mateus.encurta_link.model.User;
+import com.mateus.encurta_link.repository.UserRepository;
 
 @Service
 public class AuthenticationService {
@@ -58,13 +58,19 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse Authenticate(User request) throws InvalidCredentialsException {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new InvalidCredentialsException());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+    
+            User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new InvalidCredentialsException());
+            
+            String token = this.jwtService.generateToken(user);
+            
+            return new AuthenticationResponse(token);
+        } catch (AuthenticationException e) {
+            throw new InvalidCredentialsException();
+        }
         
-        String token = this.jwtService.generateToken(user);
 
-        return new AuthenticationResponse(token);
     }
 }

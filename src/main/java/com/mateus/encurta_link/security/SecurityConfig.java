@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.mateus.encurta_link.user.UserService;
+import com.mateus.encurta_link.service.UserService;
 
 @Configuration
 @EnableWebSecurity

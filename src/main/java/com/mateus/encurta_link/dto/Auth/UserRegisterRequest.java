@@ -1,4 +1,4 @@
-package com.mateus.encurta_link.authentication.types;
+package com.mateus.encurta_link.dto.Auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
