@@ -14,8 +14,10 @@ import com.mateus.encurta_link.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 @Service
 public class JwtService {
@@ -26,7 +28,7 @@ public class JwtService {
     public void setSecretKey(String secret) {
         this.SECRET_KEY = secret;
     }
-    
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigninKey())
@@ -46,9 +48,13 @@ public class JwtService {
     public boolean isValid(String token, UserDetails user) {
         try {
             String email = extractEmail(token);
-            return (email.equals(user.getUsername()) && !isTokenExpired(token));    
+            return (email.equals(user.getUsername()) && !isTokenExpired(token));
         } catch (ExpiredJwtException e) {
-            return false;
+            return false; // Token expirado
+        } catch (SignatureException | MalformedJwtException e) {
+            return false; // Token inválido ou adulterado
+        } catch (IllegalArgumentException e) {
+            return false; // Token nulo/vazio
         }
     }
 
