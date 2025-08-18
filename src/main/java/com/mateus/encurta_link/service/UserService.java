@@ -1,6 +1,5 @@
 package com.mateus.encurta_link.service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 

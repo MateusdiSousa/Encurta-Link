@@ -2,7 +2,6 @@ package com.mateus.encurta_link.controller;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.mateus.encurta_link.dto.ShortLink.ShortLinkDtoRequest;
 import com.mateus.encurta_link.exceptions.ShortLinkConflictException;
@@ -49,6 +48,7 @@ class ShortLinkControllerUnitTest {
         assertEquals(linkOriginal, result.getUrl());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testCriarShortLink_Success() throws ShortLinkConflictException, UserNotFoundException {
         // Arrange
@@ -67,5 +67,6 @@ class ShortLinkControllerUnitTest {
         // Assert
         assertEquals(200, response.getStatusCodeValue());
         assertTrue(response.getBody().contains("xyz789"));
+
     }
 }
