@@ -1,18 +1,22 @@
-# 🔗 Short Link Service 
+# 🔗 Encurta Link - URL Shortener Service
+
 
 A high-performance Spring Boot URL shortener with JWT authentication, Redis caching, and automated link expiration. Designed to showcase Java/Spring Boot best practices in building scalable web services.
 
 ## 📋 Prerequisites  
-- Java 21  
-- Docker (for Redis, PostgreSQL, and Spring Boot containers)  
-- Maven  
+
+- Java 21
+- Docker e Docker Compose
+- Maven 3.6+
+- Git
 
 ## ✨ Key Features  
 - **URL Shortening**: Convert long URLs into compact, shareable links  
 - **Smart Redirection**: High-performance cached redirects using Redis  
 - **Secure Authentication**: JWT-based access control  
 - **Automatic Cleanup**: Scheduled removal of expired links  
-- **Production-Ready**: Dockerized with PostgreSQL and Redis  
+- **Production-Ready**: Dockerized with PostgreSQL and Redis 
+- **Interactive Documentation:** Swagger UI for test and API documentation 
 
 ## ⚒️ Tech Stack  
 - **Backend**: Java 21, Spring Boot 3.5.4  
@@ -21,24 +25,65 @@ A high-performance Spring Boot URL shortener with JWT authentication, Redis cach
 - **Caching**: Redis (performance optimization)  
 - **Scheduling**: Spring Scheduler (automatic expiration handling)  
 - **Containerization**: Docker (easy deployment)  
+- **Documentation**: SpringDoc OpenAPI 
 
 ## ✈ Quick Start (Docker Setup)  
 
-### 1. Clone the Repository  
+### Method 1: Docker Compose (Recomended)  
 ```bash
+# Clone the repository
 git clone https://github.com/MateusdiSousa/ShortLink.git
 cd ShortLink
+
+# Run the project (automatic build and execute)
+make prod
+
+# Or run the steps manually:
+docker compose up --build
 ```
 
-### 2 Build the Project
+### Method 2: Local Development
 ```bash
-mvn clean package -DskipTests
+# Clone the repository
+git clone https://github.com/MateusdiSousa/ShortLink.git
+cd ShortLink
+
+# Build the project
+mvn clean package
+
+# Run docker compose
+docker compose up
+
+# Or run in develop mode:
+make dev
 ```
 
-### 3 Lauch with Docker
+## Useful Commands:
+
 ```bash
-docker-compose build
-docker-compose up
+# Build 
+make build
+
+# Development mode
+make dev
+
+# Production mode
+make prod
+
+# Run test
+make test
+
+# Show application logs
+make logs
+
+# Stop application
+make stop
+
+# Complete clean 
+make deep-clean
+
+# Containers status
+make status
 ```
 
 ## API Documentation
