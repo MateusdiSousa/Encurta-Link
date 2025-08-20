@@ -13,6 +13,8 @@ import com.mateus.encurta_link.model.ShortLink;
 import com.mateus.encurta_link.service.JwtService;
 import com.mateus.encurta_link.service.ShortLinkService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +40,7 @@ public class ShortLinkController implements IShortLinkController{
     }
 
     @PostMapping("create")
-    public ResponseEntity<String> criarShortLink(@RequestBody ShortLinkDtoRequest dto,
+    public ResponseEntity<String> criarShortLink(@Valid @RequestBody  ShortLinkDtoRequest dto,
             @RequestHeader(name = "Authorization") String bearerToken)
             throws ShortLinkConflictException, UserNotFoundException {
         String token = bearerToken.substring("bearer ".length());

@@ -36,7 +36,7 @@ public class AuthenticationControllerTest {
 
     @Test
     public void testSign_sucess() throws UserAlreadyExistException {
-        UserRegisterRequest dto = new UserRegisterRequest(email, "1234");
+        UserRegisterRequest dto = new UserRegisterRequest(email, "12345678");
         AuthenticationResponse response = new AuthenticationResponse(token);
 
         when(authenticationService.Register(dto)).thenReturn(response);
@@ -48,7 +48,7 @@ public class AuthenticationControllerTest {
 
     @Test
     public void testSign_userAlreadyExists() throws UserAlreadyExistException {
-        UserRegisterRequest dto = new UserRegisterRequest(email, "1234");
+        UserRegisterRequest dto = new UserRegisterRequest(email, "12345678");
 
         when(authenticationService.Register(dto)).thenThrow(new UserAlreadyExistException());
 
@@ -59,7 +59,7 @@ public class AuthenticationControllerTest {
     public void testLogin_sucess() throws InvalidCredentialsException {
         User user = new User();
         user.setEmail(email);
-        user.setPassword("1234");
+        user.setPassword("12345678");
         AuthenticationResponse response = new AuthenticationResponse(token);
 
         when(authenticationService.Authenticate(user)).thenReturn(response);
@@ -73,7 +73,7 @@ public class AuthenticationControllerTest {
     public void testLogin_InvalidCredentials() throws InvalidCredentialsException {
         User user = new User();
         user.setEmail(email);
-        user.setPassword("1234");
+        user.setPassword("12345678");
 
         when(authenticationService.Authenticate(user)).thenThrow(InvalidCredentialsException.class);
 

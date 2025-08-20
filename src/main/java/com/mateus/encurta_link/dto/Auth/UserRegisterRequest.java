@@ -12,8 +12,8 @@ public record UserRegisterRequest(
         example = "usuario@exemplo.com",
         requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @NotBlank(message = "Email é obrigatório")
-    @Email(message = "Formato de email inválido")
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Email invalid")
     String email,
 
     @Schema(
@@ -22,7 +22,7 @@ public record UserRegisterRequest(
         requiredMode = Schema.RequiredMode.REQUIRED,
         minLength = 6
     )
-    @NotBlank(message = "Senha é obrigatória")
-    @Size(min = 6, message = "Senha deve ter no mínimo 6 caracteres")
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 6, message = "Password must be 6 characters or more")
     String password
 ) {}

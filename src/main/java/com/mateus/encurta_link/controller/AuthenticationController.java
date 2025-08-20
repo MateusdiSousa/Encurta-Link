@@ -11,6 +11,8 @@ import com.mateus.encurta_link.exceptions.UserAlreadyExistException;
 import com.mateus.encurta_link.model.User;
 import com.mateus.encurta_link.service.AuthenticationService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,7 @@ public class AuthenticationController implements IAuthenticationController{
     }
 
     @PostMapping("/sign")
-    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody UserRegisterRequest request)
+    public ResponseEntity<AuthenticationResponse> registerUser(@Valid @RequestBody  UserRegisterRequest request)
             throws UserAlreadyExistException {
         AuthenticationResponse response = authenticationService.Register(request);
 
@@ -33,7 +35,7 @@ public class AuthenticationController implements IAuthenticationController{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody User request) throws InvalidCredentialsException {
+    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody  User request) throws InvalidCredentialsException {
         AuthenticationResponse response = authenticationService.Authenticate(request);
 
         return ResponseEntity.ok(response);
