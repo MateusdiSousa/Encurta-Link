@@ -43,7 +43,7 @@ public class ShortLinkService implements IShortLinkService {
         ShortLink newShortLink = new ShortLink(dto);
         newShortLink.setUser(user);
 
-        if (dto.shortLink() == null) {
+        if (dto.shortLink() == null || dto.shortLink().isBlank()) {
             String code = RandomShortLink();
             newShortLink.setShortLink(code);
             return shortLinkRepository.save(newShortLink);

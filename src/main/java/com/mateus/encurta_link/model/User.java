@@ -19,6 +19,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,16 +33,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User implements UserDetails {
-    
+
     @Id()
     @Column(name = "id", length = 36)
     @GeneratedValue(strategy = GenerationType.UUID)
     private String ID;
-    
+
     @Column(name = "email", nullable = false, unique = true, length = 120)
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Email invalid")
+
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 6, message = "Password must be 6 characters or more")
     private String password;
 
     @Enumerated(value = EnumType.STRING)
@@ -48,7 +56,6 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private Set<ShortLink> userLinks;
-
 
     @Override
     public String getUsername() {
@@ -60,11 +67,8 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
 
-    public User(UserRegisterRequest dto ) {
+    public User(UserRegisterRequest dto) {
         this.email = dto.email();
-        this.password = dto.password();     
+        this.password = dto.password();
     }
 }
-
-
-

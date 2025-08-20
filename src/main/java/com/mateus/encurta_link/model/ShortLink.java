@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -31,9 +32,11 @@ public class ShortLink {
     private String id;
 
     @Column
+    @NotBlank
     private String originalLink;
 
     @Column(unique = true)
+    @NotBlank
     private String shortLink;
 
     @ManyToOne(targetEntity = User.class)

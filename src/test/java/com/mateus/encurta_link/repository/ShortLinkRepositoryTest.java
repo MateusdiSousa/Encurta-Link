@@ -76,15 +76,16 @@ public class ShortLinkRepositoryTest {
 
     private ShortLink createShortLink(ShortLinkDtoRequest dto) {
         User newUser = createUser(
-                new UserRegisterRequest("teste@gmail.com", "1234"));
+                new UserRegisterRequest("teste@gmail.com", "12345678"));
         ShortLink newShortLink = new ShortLink(dto);
         newShortLink.setUser(newUser);
+        newShortLink.setExpirationTime(LocalDateTime.now().plusDays(7));
         return newShortLink = shortLinkRepository.save(newShortLink);
     }
 
     private ShortLink createShortLinkExpired(ShortLinkDtoRequest dto) {
         User newUser = createUser(
-                new UserRegisterRequest("teste@gmail.com", "1234"));
+                new UserRegisterRequest("teste@gmail.com", "12345678"));
         ShortLink newShortLink = new ShortLink(dto);
         newShortLink.setUser(newUser);
         newShortLink.setExpirationTime(LocalDateTime.now().minusDays(1));
