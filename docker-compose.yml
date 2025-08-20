@@ -16,7 +16,7 @@ services:
       - db
       - redis
   db:
-    image: postgres
+    image: postgres:13-alpine
     restart: always
     shm_size: 128mb
     environment:
@@ -25,6 +25,6 @@ services:
     ports:
       - 5432:5432
   redis:
-    image: redis
+    image: redis:7-alpine
     ports:
       - "6379:6379"
